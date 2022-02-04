@@ -72,7 +72,7 @@ namespace isucorpTest.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("ContactId")
+                    b.Property<long?>("ContactsId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Descripction")
@@ -82,7 +82,7 @@ namespace isucorpTest.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
+                    b.HasIndex("ContactsId");
 
                     b.ToTable("reservation");
                 });
@@ -90,7 +90,7 @@ namespace isucorpTest.Migrations
             modelBuilder.Entity("isucorpTest.Models.Contact", b =>
                 {
                     b.HasOne("isucorpTest.Models.ContactType", "ContactType")
-                        .WithMany()
+                        .WithMany("Contacts")
                         .HasForeignKey("ContactTypeId");
 
                     b.Navigation("ContactType");
@@ -98,11 +98,21 @@ namespace isucorpTest.Migrations
 
             modelBuilder.Entity("isucorpTest.Models.Reservation", b =>
                 {
-                    b.HasOne("isucorpTest.Models.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
+                    b.HasOne("isucorpTest.Models.Contact", "Contacts")
+                        .WithMany("Reservations")
+                        .HasForeignKey("ContactsId");
 
-                    b.Navigation("Contact");
+                    b.Navigation("Contacts");
+                });
+
+            modelBuilder.Entity("isucorpTest.Models.Contact", b =>
+                {
+                    b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("isucorpTest.Models.ContactType", b =>
+                {
+                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }

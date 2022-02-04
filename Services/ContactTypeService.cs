@@ -46,40 +46,88 @@ namespace isucorpTest.Services
             return contactType;
         }
 
-        public ResponseModel SaveContactType(ContactType contactTypeModel)
+        public ResponseModel AddContactType(ContactType item)
         {
             ResponseModel model = new();
+
             try
             {
-                ContactType contactType = _context.Find<ContactType>(contactTypeModel.Id);
-                
-                if(model != null)
-                {
-                    contactType.Description = contactTypeModel.Description;
-
-                    _context.Update<ContactType>(contactType);
-                    model.Message = "Contact Type Updated Succesfully";
-                }
-                else
-                {
-                    _context.Add<ContactType>(contactType);
-                    model.Message = "Contaact Type Added Succesfully";
-                }
-
+                _context.Add<ContactType>(item);
+                model.Message = "Added Succesfully a new contact type";
                 model.IsSuccess = true;
                 _context.SaveChanges();
             }
             catch (Exception exception)
             {
                 model.IsSuccess = false;
-                model.Message = exception.Message;
+                model.Message = "Error adding a new contact type (" + exception.Message + ")";
             }
 
             return model;
         }
+
+        public ResponseModel UpdateContactType(ContactType item)
+        {
+            ResponseModel model = new();
+
+            try
+            {
+                ContactType temp = _context.Find<ContactType>(item.Id);
+
+                if(temp != null)
+                {
+                    temp.Description = item.Description;
+
+                    _context.Update<ContactType>(temp);
+                    _context.SaveChanges();
+
+                    model.IsSuccess = true;
+                    model.Message = "Contact Type modified succesfully";
+                }
+                else
+                {
+                    model.IsSuccess = false;
+                    model.Message = "Contact Type does not exists";
+                }
+
+            }
+            catch (Exception exception)
+            {
+                model.IsSuccess = false;
+                model.Message = "Error modifying contact type (" + exception.Message + ")";
+            }
+
+            return model;
+        }
+
         public ResponseModel DeleteContactType(long Id)
         {
-            throw new NotImplementedException();
+            ResponseModel model = new();
+
+            try
+            {
+                ContactType contactTypeItem = _context.Find<ContactType>(Id);
+
+                if(contactTypeItem != null)
+                {
+                    _context.Remove<ContactType>(contactTypeItem);
+                    _context.SaveChanges();
+                    model.IsSuccess = true;
+                    model.Message = "Contact Type deleted succesfully";
+                }
+                else
+                {
+                    model.IsSuccess = false;
+                    model.Message = "Contact Type does not exists";
+                }
+            }
+            catch (Exception exception)
+            {
+                model.IsSuccess = false;
+                model.Message = "Contact Type deleting error (" + exception.Message + ")";
+            }
+
+            return model;
         }
      }
 }

@@ -43,36 +43,57 @@ namespace isucorpTest.Services
             return contact;
         }
 
-        public ResponseModel SaveContact(Contact contactModel)
+        public ResponseModel AddContact(Contact item)
         {
-            ResponseModel model = new ();
+            ResponseModel model = new();
 
             try
             {
-                Contact _temp = GetContactDetailsById(contactModel.Id);
-
-                if (_temp != null)
-                {
-                    _temp.Name = contactModel.Name;
-                    _temp.BitrhDate = contactModel.BitrhDate;
-                    _temp.ContactType = contactModel.ContactType;
-
-                    _context.Update<Contact>(_temp);
-                    model.Message = "Contact Updated Successfully";
-                }
-                else
-                {
-                    _context.Add<Contact>(contactModel);
-                    model.Message = "Contact Added Successfully";
-                }
-
+                _context.Add<Contact>(item);
                 _context.SaveChanges();
                 model.IsSuccess = true;
+                model.Message = "Contac added succesfully";
             }
             catch (Exception exception)
             {
                 model.IsSuccess = false;
-                model.Message = exception.Message;
+                model.Message = "Error adding a new contact (" + exception.Message + ")";
+            }
+
+            return model;
+        }
+
+        public ResponseModel UpdateContact(Contact item)
+        {
+            ResponseModel model = new();
+
+            try
+            {
+                Contact temp = _context.Find<Contact>(item.Id);
+
+                if (temp != null)
+                {
+                    temp.Name = item.Name;
+                    temp.PhoneNumber = item.PhoneNumber;
+                    temp.BitrhDate = item.BitrhDate;
+                    temp.Reservations = item.Reservations;
+                    temp.ContactTypeId = item.ContactTypeId;
+
+                    _context.Add<Contact>(temp);
+                    _context.SaveChanges();
+                    model.IsSuccess = true;
+                    model.Message = "Contact updated successfully";
+                }
+                else
+                {
+                    model.IsSuccess = false;
+                    model.Message = "Contact does not exists";
+                }
+            }
+            catch(Exception exception)
+            {
+                model.IsSuccess = false;
+                model.Message = "Contact updated error (" + exception.Message + ")";
             }
 
             return model;

@@ -49,14 +49,14 @@ namespace isucorpTest.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descripction = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    ContactId = table.Column<long>(type: "bigint", nullable: true)
+                    ContactsId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_reservation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_reservation_contact_ContactId",
-                        column: x => x.ContactId,
+                        name: "FK_reservation_contact_ContactsId",
+                        column: x => x.ContactsId,
                         principalTable: "contact",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -68,9 +68,9 @@ namespace isucorpTest.Migrations
                 column: "ContactTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_reservation_ContactId",
+                name: "IX_reservation_ContactsId",
                 table: "reservation",
-                column: "ContactId");
+                column: "ContactsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

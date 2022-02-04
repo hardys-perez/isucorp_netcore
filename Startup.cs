@@ -29,28 +29,23 @@ namespace isucorpTest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Habilitar CORS     permitir request de diferentes dominios 
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            });
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "isucorpTest", Version = "v1" });
             });
 
-            services.AddDbContext<ISUCorpContext>(options => options.UseSqlServer(Configuration.GetConnectionString("isucorpDB")));
+            services.AddDbContext<ISUCorpContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("isucorpDB")));
+
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<IContactTypeService, ContactTypeService>();
+            services.AddScoped<IReservationService, ReservationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -20,7 +20,6 @@ namespace isucorpTest.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
         public IActionResult GetAllContacts()
         {
             try
@@ -31,14 +30,14 @@ namespace isucorpTest.Controllers
                     return NotFound();
                 return Ok(contacts);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
         }
 
         [HttpGet]
-        [Route("[action]/id")]
+        [Route("{Id}")]
         public IActionResult GetContactsById(long Id)
         {
             try
@@ -55,12 +54,25 @@ namespace isucorpTest.Controllers
         }
 
         [HttpPost]
-        [Route("[action]")]
-        public IActionResult SaveContact(Contact contactModel)
+        public IActionResult AddContact(Contact contactModel)
         {
             try
             {
-                var contact = _contactService.SaveContact(contactModel);
+                var contact = _contactService.AddContact(contactModel);
+                return Ok(contact);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        public IActionResult UpdateContact(Contact contactModel)
+        {
+            try
+            {
+                var contact = _contactService.UpdateContact(contactModel);
                 return Ok(contact);
             }
             catch (Exception)
@@ -70,7 +82,7 @@ namespace isucorpTest.Controllers
         }
 
         [HttpDelete]
-        [Route("[action]/Id")]
+        [Route("{Id}")]
         public IActionResult DeleteContact(long Id)
         {
             try

@@ -11,7 +11,8 @@ namespace isucorpTest.Services
     {
         List<Contact> GetContactsList();
         Contact GetContactDetailsById(long Id);
-        ResponseModel SaveContact(Contact contactModel);
+        ResponseModel AddContact(Contact contactModel);
+        ResponseModel UpdateContact(Contact contactModel);
         ResponseModel DeleteContact(long Id);
     }
 }

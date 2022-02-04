@@ -9,26 +9,10 @@ namespace isucorpTest.Models
 {
     public class ISUCorpContext : DbContext
     {
-        public ISUCorpContext(DbContextOptions options) : base(options)
-        {
-        }
+        public ISUCorpContext(DbContextOptions options) : base(options) { }
 
-        DbSet<Contact> Contacts
-        {
-            get;
-            set;
-        }
-
-        DbSet<ContactType> ContactTypes
-        {
-            get;
-            set;
-        }
-
-        DbSet<Reservation> Reservations
-        {
-            get;
-            set;
-        }
+        DbSet<Contact> Contacts { get; set; }
+        DbSet<ContactType> ContactTypes { get; set; }
+        DbSet<Reservation> Reservations { get; set; }
     }
 }
